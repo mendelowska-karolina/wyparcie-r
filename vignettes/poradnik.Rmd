@@ -1,0 +1,91 @@
+---
+title: "Analiza przełomowości publikacji"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analiza przełomowości publikacji}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6.5,
+                      fig.height = 4.5)
+```
+
+Poradnik prowadzi przez pełną ścieżkę analizy na danych syntetycznych: od
+tabel krawędzi i publikacji, przez sieć cytowań i wskaźniki, po porównanie
+okien cytowań i wpływ niekompletności sieci na wynik.
+
+```{r}
+library(WyparcieR)
+```
+
+## Sieć o znanej strukturze
+
+Funkcja `generuj_siec()` tworzy sieć bazową z kumulacją cytowań,
+starzeniem literatury i współcytowaniem oraz dwadzieścia składowych
+kontrolnych o licznościach znanych z konstrukcji.
+
+```{r}
+dane <- generuj_siec(n = 600)
+head(dane$prawda)
+siec <- przygotuj_siec(dane$krawedzie, dane$publikacje)
+siec
+```
+
+## Wskaźniki dla składowych kontrolnych
+
+Wynik dla składowych kontrolnych odtwarza liczności z konstrukcji.
+
+```{r}
+kontrolne <- oblicz_wyparcie(siec, dane$prawda$id, okno = 5)
+all.equal(kontrolne$tabela[c("Ni", "Nj", "Nk", "Cmax")],
+          dane$prawda[c("Ni", "Nj", "Nk", "Cmax")],
+          check.attributes = FALSE)
+kontrolne
+```
+
+Składowe 1 i 2 mają tę samą liczbę prac cytujących tylko źródła, a indeksy
+przeciwnych znaków: składowa 1 jest cytowana bez źródeł, składowa 2 razem
+z nimi. Składowa 18 (`k18_cel`) ma dodatni bilans $d_p = 3/7$, ale źródło
+cytowane 38 razy przy 7 cytowaniach publikacji, więc jej indeks $D_p$ jest
+bliski zeru.
+
+## Sieć bazowa
+
+```{r}
+cele <- dane$publikacje$id[dane$publikacje$rok %in% 2001:2006 &
+                             !grepl("_", dane$publikacje$id)]
+bazowa <- oblicz_wyparcie(siec, cele, okno = 5)
+summary(bazowa)
+plot(bazowa)
+```
+
+Wykres pokazuje, że przy dużym $b_p$ indeks $D_p$ skupia się blisko zera
+niezależnie od znaku $d_p$. Tożsamość $D_p = d_p / (1 + R_k)$ zachodzi
+dokładnie; odchylenie w podsumowaniu wynika wyłącznie z arytmetyki
+zmiennoprzecinkowej.
+
+## Porównanie okien
+
+```{r}
+okna <- porownaj_okna(siec, cele = c("k01_cel", "k03_cel", "k18_cel"),
+                      okna = c(3, 4, 5))
+okna
+plot(okna)
+```
+
+## Niekompletność sieci
+
+Ta sama analiza na wariancie z usuniętymi 20% krawędzi pokazuje, jak brak
+części relacji zmienia wynik.
+
+```{r}
+niepelna <- przygotuj_siec(dane$warianty$usuniete_20, dane$publikacje)
+porownanie <- merge(
+  bazowa$tabela[c("id", "D")],
+  oblicz_wyparcie(niepelna, cele, okno = 5)$tabela[c("id", "D")],
+  by = "id", suffixes = c("_pelna", "_niepelna")
+)
+summary(porownanie$D_niepelna - porownanie$D_pelna)
+```

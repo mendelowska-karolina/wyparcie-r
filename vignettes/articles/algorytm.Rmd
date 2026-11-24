@@ -1,0 +1,71 @@
+---
+title: "Algorytm"
+subtitle: "Indeks przełomowości i jego składowe"
+bibliography: literatura.bib
+link-citations: true
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6.5,
+                      fig.height = 4)
+library(WyparcieR)
+```
+
+Strona opisuje metodę zaimplementowaną w pakiecie: definicje zbiorów
+cytujących, wskaźniki, tożsamość łączącą wskaźniki oraz granice
+stosowalności. Notacja odpowiada artykułowi źródłowemu
+[@lin2026disruption].
+
+## Zbiory cytujących
+
+Dla publikacji $p$ z rokiem $y$ i okna o długości $w$ zbiór $F$ obejmuje
+prace cytujące $p$, a zbiór $B$ prace cytujące co najmniej jedno źródło
+$p$, opublikowane w latach od $y + 1$ do $y + w$. Prace cytujące dzielą się
+na trzy rozłączne kategorie:
+
+$$
+N_i = |F \setminus B|, \qquad N_j = |F \cap B|, \qquad
+N_k = |B \setminus F|.
+$$
+
+## Indeks przełomowości
+
+$$
+D_p = \frac{N_i - N_j}{N_i + N_j + N_k}
+$$
+
+Indeks zaproponowali @funk2017dynamic. Wartość dodatnia oznacza przewagę
+prac cytujących publikację bez jej źródeł.
+
+## Składowe
+
+$$
+d_p = \frac{N_i - N_j}{N_i + N_j}, \qquad
+R_k = \frac{N_k}{N_i + N_j}, \qquad
+D_p = \frac{d_p}{1 + R_k}
+$$
+
+Bilans $d_p$ dotyczy tylko prac cytujących publikację, a stosunek $R_k$
+porównuje prace cytujące tylko źródła z cytowaniami publikacji. Tożsamość
+zachodzi dokładnie przy dodatnich mianownikach.
+
+## Najczęściej cytowane źródło
+
+$$
+b_p = \frac{C_{\max}}{C_p}, \qquad C_p = N_i + N_j
+$$
+
+$C_{\max}$ jest największą liczbą cytowań pojedynczego źródła w tym samym
+oknie. Pakiet liczy $C_{\max}$ w oknie publikacji; artykuł źródłowy nie
+określa okna dla tej wielkości. Zależność $D_p \approx d_p / (1 + 2{,}5\,
+b_p)$ ma w artykule charakter empiryczny i nie jest niezmiennikiem
+sprawdzanym w testach.
+
+## Granice stosowalności
+
+Wynik opisuje relacje cytowania zarejestrowane w bazie danych. Brak rekordu
+źródła lub niekompletna lista odwołań oznacza brak informacji, a nie brak
+cytowania; pakiet raportuje taki przypadek statusem. Indeks nie mierzy
+nowości treści ani przyczynowego wyparcia wcześniejszej literatury.
+
+## Bibliografia

@@ -1,0 +1,87 @@
+url: https://mendelowska-karolina.github.io/wyparcie-r/
+
+lang: pl
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#2E5E9E"
+    base_font: {google: "Source Sans 3"}
+    code_font: {google: "JetBrains Mono"}
+
+home:
+  title: Indeks przełomowości jako miara wyparcia
+  description: >
+    Pakiet języka R do analizy przełomowości publikacji: indeks D wraz ze
+    składowymi, które oddzielają cytowania publikacji od popularności jej
+    źródeł.
+
+navbar:
+  structure:
+    left:  [algorytm, poradnik, reference, news]
+    right: [aplikacja, oserwisie, github]
+  components:
+    reference:
+      text: Dokumentacja funkcji
+      href: reference/index.html
+    news:
+      text: Zmiany
+      href: news/index.html
+    algorytm:
+      text: Algorytm
+      href: articles/algorytm.html
+    poradnik:
+      text: Poradnik
+      href: articles/poradnik.html
+    aplikacja:
+      text: Aplikacja
+      href: app/index.html
+    oserwisie:
+      text: O serwisie
+      href: articles/o-serwisie.html
+
+articles:
+  - title: Metoda
+    navbar: ~
+    contents:
+      - articles/algorytm
+  - title: Użycie
+    contents:
+      - poradnik
+  - title: Informacje
+    contents:
+      - articles/o-serwisie
+
+reference:
+  - title: Sieć cytowań
+    desc: Od tabel krawędzi i publikacji do sieci gotowej do obliczeń.
+    contents:
+      - przygotuj_siec
+  - title: Indeks przełomowości
+    desc: Liczności kategorii, indeks D i jego składowe.
+    contents:
+      - oblicz_wyparcie
+      - metody_wyparcie_cytowan
+  - title: Analiza wrażliwości
+    desc: Porównanie okien cytowań.
+    contents:
+      - porownaj_okna
+      - metody_porownanie_okien
+  - title: Dane
+    desc: Procedura generowania sieci o znanej strukturze i zbiory przykładowe.
+    contents:
+      - generuj_siec
+      - publikacje_przyklad
+      - krawedzie_przyklad
+  - title: Pakiet
+    contents:
+      - WyparcieR-package
+
+footer:
+  structure:
+    left: nota
+    right: built_with
+  components:
+    nota: >
+      Serwis stanowi integralną część pracy licencjackiej na kierunku
+      elektroniczne przetwarzanie informacji, Instytut Studiów Informacyjnych UJ.
