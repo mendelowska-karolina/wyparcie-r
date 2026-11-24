@@ -1,0 +1,41 @@
+Package: WyparcieR
+Type: Package
+Title: Indeks Przelomowosci Publikacji jako Miara Wyparcia
+Version: 0.0.1
+Authors@R: c(
+    person("Karolina", "Mendelowska",
+           email = "karolina.k.mendelowska@gmail.com",
+           role = c("aut", "cre")),
+    person("Marek", "Deja", role = "ths",
+           comment = c(ORCID = "0000-0003-0015-2322"))
+  )
+Description: Wyznacza klasyczny indeks przelomowosci publikacji wraz z jego
+    skladowymi: licznosciami prac cytujacych publikacje, jej zrodla lub oba
+    rodzaje prac, bilansem bezposrednio cytujacych, stosunkiem cytujacych
+    tylko zrodla do cytujacych publikacje oraz czynnikiem zwiazanym z
+    najczesciej cytowanym zrodlem (Lin, Li i Wu 2026)
+    <doi:10.1162/QSS.a.409>. Raportuje zerowe mianowniki i niekompletnosc
+    sieci, porownuje okna cytowan i zawiera procedure generowania sieci
+    cytowan o znanej strukturze.
+License: GPL-3
+Encoding: UTF-8
+Language: pl
+LazyData: true
+Depends:
+    R (>= 4.1)
+Imports:
+    graphics,
+    grDevices,
+    stats,
+    utils,
+    withr
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+RoxygenNote: 7.3.3
+URL: https://github.com/mendelowska-karolina/wyparcie-r,
+    https://mendelowska-karolina.github.io/wyparcie-r/
+BugReports: https://github.com/mendelowska-karolina/wyparcie-r/issues
