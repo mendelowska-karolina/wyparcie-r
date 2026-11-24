@@ -1,0 +1,22 @@
+test_that("metody wyniku dzialaja i zwracaja obiekty", {
+  s <- przygotuj_siec(krawedzie_przyklad, publikacje_przyklad)
+  expect_output(print(s), "Siec cytowan")
+  w <- oblicz_wyparcie(s, sprintf("k%02d_cel", 1:20))
+  expect_output(print(w), "okno 5 lat")
+  sw <- summary(w)
+  expect_s3_class(sw, "summary.wyparcie_cytowan")
+  expect_output(print(sw), "Statusy")
+  grDevices::pdf(NULL)
+  on.exit(grDevices::dev.off(), add = TRUE)
+  punkty <- plot(w)
+  expect_s3_class(punkty, "data.frame")
+})
+
+test_that("metody porownania okien dzialaja", {
+  s <- przygotuj_siec(krawedzie_przyklad, publikacje_przyklad)
+  o <- porownaj_okna(s, c("k01_cel", "k03_cel"), okna = c(3, 5))
+  expect_output(print(o), "Porownanie okien")
+  grDevices::pdf(NULL)
+  on.exit(grDevices::dev.off(), add = TRUE)
+  expect_equal(dim(plot(o)), c(2L, 2L))
+})
